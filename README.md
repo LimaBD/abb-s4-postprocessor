@@ -11,6 +11,7 @@ This folder contains a custom **SprutCAM X .NET postprocessor** that outputs **A
   - `MoveL` / `MoveJ` instructions
 - Converts SprutCAM XYZ + A/B/C orientation to quaternion robtarget orientation.
 - Splits output into multiple `.mod` files automatically.
+- When split output is produced, also generates `BaseProgramName_MASTER.mod` with a `main()` routine that calls chunk modules in order.
 - Enforces file size with a **hard cap of 1024 KB** per file (floppy/emulator requirement).
 
 ## Internet research used
@@ -43,6 +44,7 @@ This folder contains a custom **SprutCAM X .NET postprocessor** that outputs **A
    - `Motion.ToolName` and `Motion.WobjName` to names that exist on the S4 controller.
 5. Run postprocessing and verify generated `.mod` files in the output folder.
 6. Transfer files to floppy/emulator and load on the ABB S4 controller.
+7. If split files were generated, run `main` from the `BaseProgramName_MASTER` module to execute all chunks in sequence.
 
 ### If SprutCAM does not show the postprocessor
 
@@ -68,3 +70,9 @@ This folder contains a custom **SprutCAM X .NET postprocessor** that outputs **A
   - orientation convention (A/B/C to quaternion)
   - zone/speed defaults
   - tool/workobject names existing on the controller
+
+## Running unit tests
+
+- Test project: `tests\AbbS4Postprocessor.Tests`
+- Run:
+  - `dotnet test .\tests\AbbS4Postprocessor.Tests\AbbS4Postprocessor.Tests.csproj`

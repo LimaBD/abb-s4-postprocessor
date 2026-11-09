@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="tests\**\*.cs" />
     <EmbeddedResource Include="Settings.xml" />
     <Reference Include="STDefLib">
       <HintPath>$(SprutCAMDir)\Bin64\STDefLib.dll</HintPath>
