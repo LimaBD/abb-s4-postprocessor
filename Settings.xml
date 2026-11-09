@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="PostSchema.xsd"?>
+<Settings Version="1.0">
+  <Description>
+    <Comments>SprutCAM X Robot postprocessor for ABB S4 (IRB 1400 M94A oriented)</Comments>
+    <CNCSystem>ABB RAPID S4</CNCSystem>
+    <MachineName>ABB IRB 1400 M94A</MachineName>
+    <Authors>Generated with Copilot</Authors>
+  </Description>
+  <Common>
+    <BreakArcs>No</BreakArcs>
+    <BreakHelix>false</BreakHelix>
+    <ArcTolerance>0.01</ArcTolerance>
+    <MaxCircleRadius>0</MaxCircleRadius>
+    <DecimalSeparator>.</DecimalSeparator>
+  </Common>
+  <UserDefinedParameters>
+    <Group ID="OutFiles" Caption="Output files">
+      <Parameter ID="OutputFolder" Caption="$(NCFilesDir)" Type="FolderName" />
+      <Parameter ID="BaseProgramName" Caption="Base RAPID file name (1-24 chars)" Type="String">SCXS4JOB</Parameter>
+      <Parameter ID="MaxFileSizeKB" Caption="Maximum file size in KB (hard-capped at 1024)" Type="Integer">1024</Parameter>
+    </Group>
+    <Group ID="Motion" Caption="Motion defaults">
+      <Parameter ID="DefaultSpeedMMperSec" Caption="Default speed if feed is undefined (mm/s)" Type="Integer">250</Parameter>
+      <Parameter ID="ZoneName" Caption="RAPID zone name (for example fine, z1, z5, z10)" Type="String">z10</Parameter>
+      <Parameter ID="ToolName" Caption="RAPID tooldata name (must exist on controller)" Type="String">tool0</Parameter>
+      <Parameter ID="WobjName" Caption="RAPID wobjdata name (must exist on controller)" Type="String">wobj0</Parameter>
+    </Group>
+  </UserDefinedParameters>
+</Settings>

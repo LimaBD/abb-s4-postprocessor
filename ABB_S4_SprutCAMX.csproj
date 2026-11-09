@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <OutDir>bin\Debug\</OutDir>
+    <PublishDir>bin\Debug\</PublishDir>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <SprutCAMDir Condition="'$(SprutCAMDir)'==''">C:\Program Files\SprutCAM Tech\SprutCAM X Robot 17</SprutCAMDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Settings.xml" />
+    <Reference Include="STDefLib">
+      <HintPath>$(SprutCAMDir)\Bin64\STDefLib.dll</HintPath>
+    </Reference>
+    <Reference Include="VecMatrLib">
+      <HintPath>$(SprutCAMDir)\Bin64\VecMatrLib.dll</HintPath>
+    </Reference>
+    <Reference Include="SCPostprocessor">
+      <HintPath>$(SprutCAMDir)\Bin64\SCPostprocessor.dll</HintPath>
+    </Reference>
+    <Using Include="System" />
+    <Using Include="System.IO" />
+    <Using Include="System.Diagnostics" />
+    <Using Include="SprutTechnology.STDefLib" />
+    <Using Include="SprutTechnology.VecMatrLib" />
+    <Using Include="SprutTechnology.STDefLib.STDef" Static="true" />
+    <Using Include="SprutTechnology.VecMatrLib.VML" Static="true" />
+    <Using Include="SprutTechnology.SCPostprocessor.CommonFuncs" Static="true" />
+  </ItemGroup>
+</Project>
