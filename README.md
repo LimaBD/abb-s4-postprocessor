@@ -1,3 +1,5 @@
+![abb robots](./abb-robots.jpg)
+
 # ABB S4 SprutCAM X Toolkit
 
 This repository contains two related tools for ABB S4 workflows with SprutCAM X Robot:
