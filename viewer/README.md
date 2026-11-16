@@ -15,7 +15,7 @@ It was made to validate CAM-generated paths before running on an ABB controller 
 ## Usage
 
 ```powershell
-python .\rapid_path_viewer.py .\SCXS4JOB.mod `
+python .\rapid_path_viewer.py .\EXERCISE.PRG `
   --out-html .\out\SCXS4JOB_path.html `
   --out-report .\out\SCXS4JOB_report.json `
   --max-segment-mm 200 `
@@ -31,10 +31,15 @@ Optional safety limits:
 Example:
 
 ```powershell
-python .\rapid_path_viewer.py .\SCXS4JOB.mod `
+python .\rapid_path_viewer.py .\EXERCISE.PRG `
   --workspace -100,800,-800,800,0,1200 `
   --min-z-mm 0
 ```
+
+The parser supports both:
+
+- named robtargets (`MoveL p1,...`) and
+- EXERCISE-style inline targets (`MoveL [[x,y,z],[q1,q2,q3,q4],...],v...,FINE,TOOL0;`).
 
 ## Output
 
@@ -69,7 +74,7 @@ python .\rapid_path_viewer.py .\SCXS4JOB.mod `
 - If the HTML looks black or empty, regenerate it and reopen:
 
 ```powershell
-python .\rapid_path_viewer.py .\SCXS4JOB.mod --out-html .\out\SCXS4JOB_path.html --out-report .\out\SCXS4JOB_report.json
+python .\rapid_path_viewer.py .\SCXS4JOB.PRG --out-html .\out\SCXS4JOB_path.html --out-report .\out\SCXS4JOB_report.json
 ```
 
 - If you see **"Failed to load 3D engine (Three.js)"**, your network is blocking CDN scripts. Allow access to `unpkg.com` or use another network.

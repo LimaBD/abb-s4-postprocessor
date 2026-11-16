@@ -24,7 +24,6 @@
       <Parameter ID="DefaultSpeedMMperSec" Caption="Default speed if feed is undefined (mm/s)" Type="Integer">250</Parameter>
       <Parameter ID="ZoneName" Caption="RAPID zone name (for example fine, z1, z5, z10)" Type="String">z10</Parameter>
       <Parameter ID="ToolName" Caption="RAPID tooldata name (must exist on controller)" Type="String">tool0</Parameter>
-      <Parameter ID="WobjName" Caption="RAPID wobjdata name (must exist on controller)" Type="String">wobj0</Parameter>
     </Group>
   </UserDefinedParameters>
 </Settings>

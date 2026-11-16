@@ -1,17 +1,17 @@
 # ABB S4 postprocessor for SprutCAM X Robot
 
-This folder contains a custom **SprutCAM X .NET postprocessor** that outputs **ABB S4-oriented RAPID `.mod` files** for robots such as **IRB 1400 M94A**.
+This folder contains a custom **SprutCAM X .NET postprocessor** that outputs **ABB S4-oriented RAPID `.PRG` files** for robots such as **IRB 1400 M94A**.
 
 ## What this post does
 
-- Generates RAPID modules (`.mod`) with:
+- Generates RAPID modules (`.PRG`) with EXERCISE-style syntax:
+  - `%%% / VERSION / LANGUAGE` header
   - `MODULE ... ENDMODULE`
-  - `CONST robtarget pN := ...`
   - `PROC main()`
-  - `MoveL` / `MoveJ` instructions
+  - inline `MoveL` / `MoveJ` targets (`[[x,y,z],[q1,q2,q3,q4],[...],[...]]`)
 - Converts SprutCAM XYZ + A/B/C orientation to quaternion robtarget orientation.
-- Splits output into multiple `.mod` files automatically.
-- When split output is produced, also generates `BaseProgramName_MASTER.mod` with a `main()` routine that calls chunk modules in order.
+- Splits output into multiple `.PRG` files automatically.
+- When split output is produced, also generates `BaseProgramName_MASTER.PRG` with a `main()` routine that calls chunk modules in order.
 - Enforces file size with a **hard cap of 1024 KB** per file (floppy/emulator requirement).
 
 ## Internet research used
@@ -41,8 +41,8 @@ This folder contains a custom **SprutCAM X .NET postprocessor** that outputs **A
    - `OutFiles.OutputFolder`
    - `OutFiles.BaseProgramName`
    - `OutFiles.MaxFileSizeKB` (keep `<= 1024` for floppy/emulator workflow)
-   - `Motion.ToolName` and `Motion.WobjName` to names that exist on the S4 controller.
-5. Run postprocessing and verify generated `.mod` files in the output folder.
+   - `Motion.ToolName` to a name that exists on the S4 controller.
+5. Run postprocessing and verify generated `.PRG` files in the output folder.
 6. Transfer files to floppy/emulator and load on the ABB S4 controller.
 7. If split files were generated, run `main` from the `BaseProgramName_MASTER` module to execute all chunks in sequence.
 
@@ -54,18 +54,17 @@ This folder contains a custom **SprutCAM X .NET postprocessor** that outputs **A
 
 ## Important parameters (`Settings.xml`)
 
-- `OutFiles.OutputFolder`: target folder for generated `.mod` files
+- `OutFiles.OutputFolder`: target folder for generated `.PRG` files
 - `OutFiles.BaseProgramName`: base program/module name
 - `OutFiles.MaxFileSizeKB`: maximum file size in KB (hard-capped to 1024)
 - `Motion.DefaultSpeedMMperSec`: fallback speed
 - `Motion.ZoneName`: RAPID zone (e.g. `fine`, `z1`, `z10`)
 - `Motion.ToolName`: controller tooldata name (e.g. `tool0`)
-- `Motion.WobjName`: controller wobjdata name (e.g. `wobj0`)
 
 ## Notes for ABB S4 target
 
 - RAPID dialect differences can exist between controller generations.
-- This post is intentionally conservative (MoveL/MoveJ + robtarget + existing tool/wobj names).
+- This post is intentionally conservative (MoveL/MoveJ + inline robtarget + existing tool names).
 - Validate with a small job first on robot/simulator and adjust:
   - orientation convention (A/B/C to quaternion)
   - zone/speed defaults

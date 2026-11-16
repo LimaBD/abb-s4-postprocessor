@@ -33,7 +33,10 @@ class Move:
 
 
 def parse_xyz(text: str) -> Point3D:
-    values = [v.strip() for v in text.split(",")]
+    cleaned = text.strip()
+    if cleaned.startswith("[") and cleaned.endswith("]"):
+        cleaned = cleaned[1:-1]
+    values = [v.strip() for v in cleaned.split(",")]
     if len(values) < 3:
         raise ValueError(f"Invalid XYZ text: {text}")
     return Point3D(float(values[0]), float(values[1]), float(values[2]))
@@ -51,8 +54,39 @@ def parse_robtargets(lines: List[str]) -> Dict[str, Point3D]:
     return targets
 
 
+def split_top_level_args(arg_text: str) -> List[str]:
+    parts: List[str] = []
+    token: List[str] = []
+    depth_square = 0
+    depth_round = 0
+
+    for ch in arg_text:
+        if ch == "," and depth_square == 0 and depth_round == 0:
+            part = "".join(token).strip()
+            if part:
+                parts.append(part)
+            token.clear()
+            continue
+
+        token.append(ch)
+
+        if ch == "[":
+            depth_square += 1
+        elif ch == "]" and depth_square > 0:
+            depth_square -= 1
+        elif ch == "(":
+            depth_round += 1
+        elif ch == ")" and depth_round > 0:
+            depth_round -= 1
+
+    tail = "".join(token).strip()
+    if tail:
+        parts.append(tail)
+    return parts
+
+
 def parse_move_args(arg_text: str) -> Tuple[str, Optional[str]]:
-    parts = [p.strip() for p in arg_text.split(",")]
+    parts = split_top_level_args(arg_text)
     target_name = parts[0] if parts else ""
     speed = parts[1] if len(parts) > 1 else None
     return target_name, speed
