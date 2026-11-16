@@ -96,7 +96,23 @@ public class PostprocessorPrivateLogicTests
         Assert.Contains("VERSION:1", text);
         Assert.Contains("LANGUAGE:ENGLISH", text);
         Assert.Contains("MODULE EXERCISE", text);
+        Assert.Contains("VAR speeddata v300:=[300,500,5000,1000];", text);
         Assert.Contains("MoveL [[809,-384.3,1663.9],[0.36169,0.04361,0.93128,-0.0011],[0,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]],v300,FINE,TOOL0;", text);
+    }
+
+    [Fact]
+    public void ResolveSpeedMmPerSec_BucketsByFiveMillimetersPerSecond()
+    {
+        var sut = new Postprocessor();
+
+        SetField(sut, "currentFeedMmPerMin", 67d * 60d);
+        int first = InvokeIntInstanceMethod(sut, "ResolveSpeedMmPerSec", false);
+
+        SetField(sut, "currentFeedMmPerMin", 63d * 60d);
+        int second = InvokeIntInstanceMethod(sut, "ResolveSpeedMmPerSec", false);
+
+        Assert.Equal(65, first);
+        Assert.Equal(65, second);
     }
 
     private static void SetProperty(object target, string propertyName, object value)
@@ -120,5 +136,14 @@ public class PostprocessorPrivateLogicTests
         object? result = method.Invoke(target, args);
         Assert.NotNull(result);
         return Assert.IsType<string>(result);
+    }
+
+    private static int InvokeIntInstanceMethod(object target, string methodName, params object[] args)
+    {
+        MethodInfo? method = target.GetType().GetMethod(methodName, BindingFlags.Instance | BindingFlags.NonPublic);
+        Assert.NotNull(method);
+        object? result = method.Invoke(target, args);
+        Assert.NotNull(result);
+        return Assert.IsType<int>(result);
     }
 }

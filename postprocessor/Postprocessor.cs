@@ -8,6 +8,7 @@ namespace SprutTechnology.SCPostprocessor
     {
         private const int AbsoluteMaxFileSizeKb = 1024;
         private const string ExtAxisUndefinedRapid = "9E+09";
+        private const int SpeedBucketSizeMmPerSec = 5;
 
         private readonly List<List<MotionPoint>> chunks = new();
         private readonly List<string> pendingComments = new();
@@ -17,7 +18,7 @@ namespace SprutTechnology.SCPostprocessor
         private string outputFolder = string.Empty;
         private string baseProgramName = "SCXS4JOB";
         private string toolName = "tool0";
-        private string zoneName = "z10";
+        private string zoneName = "FINE";
         private double currentFeedMmPerMin;
         private int defaultSpeedMmPerSec = 250;
 
@@ -42,7 +43,7 @@ namespace SprutTechnology.SCPostprocessor
             outputFolder = Settings.Params.Str["OutFiles.OutputFolder"];
             baseProgramName = SanitizeIdentifier(Settings.Params.Str["OutFiles.BaseProgramName"], "SCXS4JOB");
             toolName = SanitizeIdentifier(Settings.Params.Str["Motion.ToolName"], "tool0");
-            zoneName = SanitizeIdentifier(Settings.Params.Str["Motion.ZoneName"], "z10");
+            zoneName = SanitizeIdentifier(Settings.Params.Str["Motion.ZoneName"], "FINE");
             defaultSpeedMmPerSec = Settings.Params.Int["Motion.DefaultSpeedMMperSec"];
             if (defaultSpeedMmPerSec <= 0)
             {
@@ -224,6 +225,7 @@ namespace SprutTechnology.SCPostprocessor
         {
             string moduleName = BuildModuleName(chunkIndex);
             var sb = new StringBuilder(8192);
+            List<int> usedSpeeds = CollectUsedSpeeds(points);
 
             sb.AppendLine("%%%");
             sb.AppendLine("  VERSION:1");
@@ -232,6 +234,14 @@ namespace SprutTechnology.SCPostprocessor
             sb.AppendLine();
             sb.AppendLine($"MODULE {moduleName}");
             sb.AppendLine();
+            foreach (int speed in usedSpeeds)
+            {
+                sb.AppendLine($"  VAR speeddata {BuildSpeedReference(speed)}:=[{speed},500,5000,1000];");
+            }
+            if (usedSpeeds.Count > 0)
+            {
+                sb.AppendLine();
+            }
             sb.AppendLine("  PROC main()");
             foreach (var p in points)
             {
@@ -241,7 +251,7 @@ namespace SprutTechnology.SCPostprocessor
                 }
 
                 string move = p.JointMotion ? "MoveJ" : "MoveL";
-                sb.AppendLine($"    {move} {BuildInlineRobtarget(p)},v{p.SpeedMmPerSec},{zoneName.ToUpperInvariant()},{toolName.ToUpperInvariant()};");
+                sb.AppendLine($"    {move} {BuildInlineRobtarget(p)},{BuildSpeedReference(p.SpeedMmPerSec)},{zoneName.ToUpperInvariant()},{toolName.ToUpperInvariant()};");
             }
             sb.AppendLine("  ENDPROC");
             sb.AppendLine();
@@ -336,12 +346,12 @@ namespace SprutTechnology.SCPostprocessor
         {
             if (jointMotion)
             {
-                return 500;
+                return BucketSpeedMmPerSec(500);
             }
 
             if (currentFeedMmPerMin <= 0)
             {
-                return defaultSpeedMmPerSec;
+                return BucketSpeedMmPerSec(defaultSpeedMmPerSec);
             }
 
             int speed = (int)Math.Round(currentFeedMmPerMin / 60.0, MidpointRounding.AwayFromZero);
@@ -349,7 +359,28 @@ namespace SprutTechnology.SCPostprocessor
             {
                 speed = defaultSpeedMmPerSec;
             }
-            return speed;
+            return BucketSpeedMmPerSec(speed);
+        }
+
+        private static int BucketSpeedMmPerSec(int speedMmPerSec)
+        {
+            int bounded = Math.Max(SpeedBucketSizeMmPerSec, speedMmPerSec);
+            return (int)(Math.Round(bounded / (double)SpeedBucketSizeMmPerSec, MidpointRounding.AwayFromZero) * SpeedBucketSizeMmPerSec);
+        }
+
+        private static string BuildSpeedReference(int speedMmPerSec)
+        {
+            return $"v{speedMmPerSec}";
+        }
+
+        private static List<int> CollectUsedSpeeds(List<MotionPoint> points)
+        {
+            var used = new SortedSet<int>();
+            foreach (MotionPoint point in points)
+            {
+                used.Add(point.SpeedMmPerSec);
+            }
+            return new List<int>(used);
         }
 
         private static double DegreesToRadians(double value)

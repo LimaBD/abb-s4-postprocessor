@@ -7,9 +7,11 @@ This folder contains a custom **SprutCAM X .NET postprocessor** that outputs **A
 - Generates RAPID modules (`.PRG`) with EXERCISE-style syntax:
   - `%%% / VERSION / LANGUAGE` header
   - `MODULE ... ENDMODULE`
+  - per-module `VAR speeddata vXX := [...]` declarations for used speeds
   - `PROC main()`
   - inline `MoveL` / `MoveJ` targets (`[[x,y,z],[q1,q2,q3,q4],[...],[...]]`)
 - Converts SprutCAM XYZ + A/B/C orientation to quaternion robtarget orientation.
+- Buckets feed-based speeds to 5 mm/s steps (for example 63 and 67 both map to `v65`) and only declares the speed references used in each output module.
 - Splits output into multiple `.PRG` files automatically.
 - When split output is produced, also generates `BaseProgramName_MASTER.PRG` with a `main()` routine that calls chunk modules in order.
 - Enforces file size with a **hard cap of 1024 KB** per file (floppy/emulator requirement).
@@ -58,7 +60,7 @@ This folder contains a custom **SprutCAM X .NET postprocessor** that outputs **A
 - `OutFiles.BaseProgramName`: base program/module name
 - `OutFiles.MaxFileSizeKB`: maximum file size in KB (hard-capped to 1024)
 - `Motion.DefaultSpeedMMperSec`: fallback speed
-- `Motion.ZoneName`: RAPID zone (e.g. `fine`, `z1`, `z10`)
+- `Motion.ZoneName`: RAPID zone (e.g. `fine`)
 - `Motion.ToolName`: controller tooldata name (e.g. `tool0`)
 
 ## Notes for ABB S4 target
