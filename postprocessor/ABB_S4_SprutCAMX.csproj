@@ -12,13 +12,13 @@
     <Compile Remove="tests\**\*.cs" />
     <EmbeddedResource Include="Settings.xml" />
     <Reference Include="STDefLib">
-      <HintPath>$(SprutCAMDir)\Bin64\STDefLib.dll</HintPath>
+      <HintPath>$(SprutCAMDir)\STDefLib.dll</HintPath>
     </Reference>
     <Reference Include="VecMatrLib">
-      <HintPath>$(SprutCAMDir)\Bin64\VecMatrLib.dll</HintPath>
+      <HintPath>$(SprutCAMDir)\VecMatrLib.dll</HintPath>
     </Reference>
     <Reference Include="SCPostprocessor">
-      <HintPath>$(SprutCAMDir)\Bin64\SCPostprocessor.dll</HintPath>
+      <HintPath>$(SprutCAMDir)\SCPostprocessor.dll</HintPath>
     </Reference>
     <Using Include="System" />
     <Using Include="System.IO" />
