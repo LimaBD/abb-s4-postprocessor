@@ -96,8 +96,9 @@ public class PostprocessorPrivateLogicTests
         Assert.Contains("VERSION:1", text);
         Assert.Contains("LANGUAGE:ENGLISH", text);
         Assert.Contains("MODULE EXERCISE", text);
+        Assert.Contains("PERS wobjdata wobj_table;", text);
         Assert.Contains("VAR speeddata speed300:=[300,500,5000,1000];", text);
-        Assert.Contains("MoveL [[809,-384.3,1663.9],[0.36169,0.04361,0.93128,-0.0011],[0,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]],speed300,FINE,TOOL0;", text);
+        Assert.Contains("MoveL [[809,-384.3,1663.9],[0.36169,0.04361,0.93128,-0.0011],[0,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]],speed300,FINE,TOOL0,\\WObj:=wobj_table;", text);
     }
 
     [Fact]

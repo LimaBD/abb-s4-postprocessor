@@ -234,6 +234,8 @@ namespace SprutTechnology.SCPostprocessor
             sb.AppendLine();
             sb.AppendLine($"MODULE {moduleName}");
             sb.AppendLine();
+            sb.AppendLine("  PERS wobjdata wobj_table;");
+            sb.AppendLine();
             foreach (int speed in usedSpeeds)
             {
                 sb.AppendLine($"  VAR speeddata {BuildSpeedReference(speed)}:=[{speed},500,5000,1000];");
@@ -251,7 +253,7 @@ namespace SprutTechnology.SCPostprocessor
                 }
 
                 string move = p.JointMotion ? "MoveJ" : "MoveL";
-                sb.AppendLine($"    {move} {BuildInlineRobtarget(p)},{BuildSpeedReference(p.SpeedMmPerSec)},{zoneName.ToUpperInvariant()},{toolName.ToUpperInvariant()};");
+                sb.AppendLine($"    {move} {BuildInlineRobtarget(p)},{BuildSpeedReference(p.SpeedMmPerSec)},{zoneName.ToUpperInvariant()},{toolName.ToUpperInvariant()},\\WObj:=wobj_table;");
             }
             sb.AppendLine("  ENDPROC");
             sb.AppendLine();
