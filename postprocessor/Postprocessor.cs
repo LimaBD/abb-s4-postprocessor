@@ -370,7 +370,7 @@ namespace SprutTechnology.SCPostprocessor
 
         private static string BuildSpeedReference(int speedMmPerSec)
         {
-            return $"v{speedMmPerSec}";
+            return $"speed{speedMmPerSec}";
         }
 
         private static List<int> CollectUsedSpeeds(List<MotionPoint> points)
