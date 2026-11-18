@@ -11,10 +11,11 @@ This folder contains a custom **SprutCAM X .NET postprocessor** that outputs **A
   - `PROC main()`
   - inline `MoveL` / `MoveJ` targets (`[[x,y,z],[q1,q2,q3,q4],[...],[...]]`)
 - Converts SprutCAM XYZ + A/B/C orientation to quaternion robtarget orientation.
-- Buckets feed-based speeds to 5 mm/s steps (for example 63 and 67 both map to `v65`) and only declares the speed references used in each output module.
+- Buckets feed-based speeds to 5 mm/s steps (for example 63 and 67 both map to `speed65`) and only declares the speed references used in each output module.
 - Splits output into multiple `.PRG` files automatically.
 - When split output is produced, also generates `BaseProgramName_MASTER.PRG` with a `main()` routine that calls chunk modules in order.
 - Enforces file size with a **hard cap of 1024 KB** per file (floppy/emulator requirement).
+- Create new Wobjdata coordinate system `wobj_table`.
 
 ## Internet research used
 
