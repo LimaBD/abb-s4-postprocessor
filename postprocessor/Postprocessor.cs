@@ -234,7 +234,7 @@ namespace SprutTechnology.SCPostprocessor
             sb.AppendLine();
             sb.AppendLine($"MODULE {moduleName}");
             sb.AppendLine();
-            sb.AppendLine("  PERS wobjdata wobj_table := [FALSE,TRUE,\"\",[[0,0,0],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];");
+            sb.AppendLine("  PERS wobjdata wobj_myworkpiece := [FALSE,TRUE,\"\",[[0,0,0],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];");
             sb.AppendLine("  PERS tooldata tool_mytool := [TRUE,[[0,0,0],[1,0,0,0]],[0,[0,0,0],[1,0,0,0],0,0,0]];");
             sb.AppendLine();
             foreach (int speed in usedSpeeds)
@@ -254,7 +254,7 @@ namespace SprutTechnology.SCPostprocessor
                 }
 
                 string move = p.JointMotion ? "MoveJ" : "MoveL";
-                sb.AppendLine($"    {move} {BuildInlineRobtarget(p)},{BuildSpeedReference(p.SpeedMmPerSec)},{zoneName.ToUpperInvariant()},{toolName}\\WObj:=wobj_table;");
+                sb.AppendLine($"    {move} {BuildInlineRobtarget(p)},{BuildSpeedReference(p.SpeedMmPerSec)},{zoneName.ToUpperInvariant()},{toolName}\\WObj:=wobj_myworkpiece;");
             }
             sb.AppendLine("  ENDPROC");
             sb.AppendLine();

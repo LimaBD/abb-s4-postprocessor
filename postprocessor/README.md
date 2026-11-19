@@ -15,7 +15,7 @@ This folder contains a custom **SprutCAM X .NET postprocessor** that outputs **A
 - Splits output into multiple `.PRG` files automatically.
 - When split output is produced, also generates `BaseProgramName_MASTER.PRG` with a `main()` routine that calls chunk modules in order.
 - Enforces file size with a **hard cap of 1024 KB** per file (floppy/emulator requirement).
-- Create new Wobjdata coordinate system `wobj_table`.
+- Create new Wobjdata coordinate system `wobj_myworkpiece`.
 
 ## Internet research used
 
