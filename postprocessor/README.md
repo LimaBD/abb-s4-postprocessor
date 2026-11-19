@@ -62,7 +62,7 @@ This folder contains a custom **SprutCAM X .NET postprocessor** that outputs **A
 - `OutFiles.MaxFileSizeKB`: maximum file size in KB (hard-capped to 1024)
 - `Motion.DefaultSpeedMMperSec`: fallback speed
 - `Motion.ZoneName`: RAPID zone (e.g. `fine`)
-- `Motion.ToolName`: controller tooldata name (e.g. `tool0`)
+- `Motion.ToolName`: controller tooldata name (e.g. `tool_mytool`)
 
 ## Notes for ABB S4 target
 

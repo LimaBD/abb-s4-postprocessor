@@ -23,7 +23,7 @@
     <Group ID="Motion" Caption="Motion defaults">
       <Parameter ID="DefaultSpeedMMperSec" Caption="Default speed if feed is undefined (mm/s)" Type="Integer">250</Parameter>
       <Parameter ID="ZoneName" Caption="RAPID zone name (for example fine)" Type="String">fine</Parameter>
-      <Parameter ID="ToolName" Caption="RAPID tooldata name (must exist on controller)" Type="String">tool0</Parameter>
+      <Parameter ID="ToolName" Caption="RAPID tooldata name (must exist on controller)" Type="String">tool_mytool</Parameter>
     </Group>
   </UserDefinedParameters>
 </Settings>

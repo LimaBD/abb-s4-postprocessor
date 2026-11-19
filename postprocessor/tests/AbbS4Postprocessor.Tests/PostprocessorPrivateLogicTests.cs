@@ -71,7 +71,7 @@ public class PostprocessorPrivateLogicTests
         var sut = new Postprocessor();
         SetField(sut, "baseProgramName", "EXERCISE");
         SetField(sut, "zoneName", "fine");
-        SetField(sut, "toolName", "tool0");
+        SetField(sut, "toolName", "tool_mytool");
 
         Type pointType = typeof(Postprocessor).GetNestedType("MotionPoint", BindingFlags.NonPublic)!;
         object point = Activator.CreateInstance(pointType)!;
@@ -97,8 +97,9 @@ public class PostprocessorPrivateLogicTests
         Assert.Contains("LANGUAGE:ENGLISH", text);
         Assert.Contains("MODULE EXERCISE", text);
         Assert.Contains("PERS wobjdata wobj_table := [FALSE,TRUE,\"\",[[0,0,0],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];", text);
+        Assert.Contains("PERS tooldata tool_mytool := [TRUE,[[0,0,0],[1,0,0,0]],[0,[0,0,0],[1,0,0,0],0,0,0]];", text);
         Assert.Contains("VAR speeddata speed300:=[300,500,5000,1000];", text);
-        Assert.Contains("MoveL [[809,-384.3,1663.9],[0.36169,0.04361,0.93128,-0.0011],[0,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]],speed300,FINE,TOOL0\\WObj:=wobj_table;", text);
+        Assert.Contains("MoveL [[809,-384.3,1663.9],[0.36169,0.04361,0.93128,-0.0011],[0,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]],speed300,FINE,tool_mytool\\WObj:=wobj_table;", text);
     }
 
     [Fact]

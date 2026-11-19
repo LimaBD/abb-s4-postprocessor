@@ -17,7 +17,7 @@ namespace SprutTechnology.SCPostprocessor
         private int maxFileSizeBytes;
         private string outputFolder = string.Empty;
         private string baseProgramName = "SCXS4JOB";
-        private string toolName = "tool0";
+        private string toolName = "tool_mytool";
         private string zoneName = "FINE";
         private double currentFeedMmPerMin;
         private int defaultSpeedMmPerSec = 250;
@@ -42,7 +42,7 @@ namespace SprutTechnology.SCPostprocessor
             unitsAreInches = prj.Int["Units"] > 0;
             outputFolder = Settings.Params.Str["OutFiles.OutputFolder"];
             baseProgramName = SanitizeIdentifier(Settings.Params.Str["OutFiles.BaseProgramName"], "SCXS4JOB");
-            toolName = SanitizeIdentifier(Settings.Params.Str["Motion.ToolName"], "tool0");
+            toolName = SanitizeIdentifier(Settings.Params.Str["Motion.ToolName"], "tool_mytool");
             zoneName = SanitizeIdentifier(Settings.Params.Str["Motion.ZoneName"], "FINE");
             defaultSpeedMmPerSec = Settings.Params.Int["Motion.DefaultSpeedMMperSec"];
             if (defaultSpeedMmPerSec <= 0)
@@ -235,6 +235,7 @@ namespace SprutTechnology.SCPostprocessor
             sb.AppendLine($"MODULE {moduleName}");
             sb.AppendLine();
             sb.AppendLine("  PERS wobjdata wobj_table := [FALSE,TRUE,\"\",[[0,0,0],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];");
+            sb.AppendLine("  PERS tooldata tool_mytool := [TRUE,[[0,0,0],[1,0,0,0]],[0,[0,0,0],[1,0,0,0],0,0,0]];");
             sb.AppendLine();
             foreach (int speed in usedSpeeds)
             {
@@ -253,7 +254,7 @@ namespace SprutTechnology.SCPostprocessor
                 }
 
                 string move = p.JointMotion ? "MoveJ" : "MoveL";
-                sb.AppendLine($"    {move} {BuildInlineRobtarget(p)},{BuildSpeedReference(p.SpeedMmPerSec)},{zoneName.ToUpperInvariant()},{toolName.ToUpperInvariant()}\\WObj:=wobj_table;");
+                sb.AppendLine($"    {move} {BuildInlineRobtarget(p)},{BuildSpeedReference(p.SpeedMmPerSec)},{zoneName.ToUpperInvariant()},{toolName}\\WObj:=wobj_table;");
             }
             sb.AppendLine("  ENDPROC");
             sb.AppendLine();
